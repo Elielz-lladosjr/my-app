@@ -1,0 +1,274 @@
+/* app/instituto/layout.module.css */
+
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerBackground {
+  background: linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 100%),
+              url('/fondo-instituto.webp') center/cover;
+  background-attachment: fixed;
+  padding: 20px 40px 30px 40px;
+  border-bottom: 3px solid #e0e0e0;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto 25px auto;
+  gap: 30px;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.titleMain {
+  font-family: 'Times New Roman', serif;
+  font-size: 2.2rem;
+  color: #333;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: normal;
+}
+
+.titleSub {
+  color: #0070f3;
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.searchButton {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 8px 15px;
+  transition: color 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.searchButton:hover {
+  color: #d32f2f;
+}
+
+/* Contenedor del menú */
+.navContainer {
+  background: white;
+  border: 3px solid #d32f2f;
+  border-radius: 12px;
+  max-width: fit-content;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.navList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.menuItem,
+.menuItemDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-right: 2px solid #f0f0f0;
+}
+
+.menuItem:last-child,
+.menuItemDropdown:last-child {
+  border-right: none;
+}
+
+.navLink {
+  color: #d32f2f;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 15px 18px;
+  display: block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.navLink:hover {
+  color: #a00000;
+  background: rgba(211, 47, 47, 0.05);
+}
+
+.plusIcon {
+  color: #d32f2f;
+  font-size: 1.1rem;
+  margin: 0 5px 0 0;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Dropdown styles */
+.dropdownContent {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #2c2c2c;
+  min-width: 220px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 100;
+  border-radius: 0 0 8px 8px;
+}
+
+.dropdownContent a {
+  color: white;
+  padding: 12px 18px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #444;
+  transition: background-color 0.3s ease;
+}
+
+.dropdownContent a:last-child {
+  border-bottom: none;
+}
+
+.dropdownContent a:hover {
+  background-color: #d32f2f;
+}
+
+.menuItemDropdown:hover .dropdownContent {
+  display: block;
+}
+
+/* Main Content */
+.mainContainer {
+  flex: 1;
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.cardsSection {
+  width: 100%;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.cardLink {
+  text-decoration: none;
+  cursor: pointer;
+  height: 100%;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .cardsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .titleMain {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerBackground {
+    padding: 15px 20px 25px 20px;
+  }
+
+  .headerTop {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .branding {
+    width: 100%;
+  }
+
+  .searchContainer {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .titleMain {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  .navLink {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+  }
+
+  .mainContainer {
+    padding: 20px;
+  }
+
+  .navList {
+    justify-content: center;
+  }
+
+  .menuItem,
+  .menuItemDropdown {
+    border-right: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .titleMain {
+    font-size: 1.2rem;
+  }
+
+  .navLink {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  .plusIcon {
+    display: none;
+  }
+}
