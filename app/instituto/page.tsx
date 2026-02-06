@@ -1,64 +1,52 @@
+"use client";
+import { useState } from 'react';
 import s from './instituto.module.css';
-
+import NoticiaModal from './components/NoticiaModal';
 
 export default function Page() {
+  const [show, setShow] = useState(false);
+  const [seleccionada, setSeleccionada] = useState<any>(null);
+
+  const noticias = [
+    { id: 1, titulo: "Nueva aula ATECA", texto: "Nuevo espacio de innovación.", imagen: "/card1.jpg" },
+    { id: 2, titulo: "Taller contra el acoso", texto: "Charla para la ESO.", imagen: "/card2.png" },
+    { id: 3, titulo: "Feliz Navidad", texto: "Felicitación del centro.", imagen: "/card3.webp" },
+    { id: 4, titulo: "Charlas educativas", texto: "Expertos en ciberseguridad.", imagen: "/card4.webp" },
+  ];
+
+  const abrirModal = (noticia: any) => {
+    setSeleccionada(noticia);
+    setShow(true);
+  };
+
   return (
     <main className={s.grid}>
-      
-      {/* IZQUIERDA: NOTICIAS */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-          gap: '20px'
-        }}
-      >
-        <div className={s.card}>
-          <small>IES CURA VALERA</small>
-          <h3>Nueva aula ATECA</h3>
-          <p>El centro incorpora un nuevo espacio de innovación tecnológica.</p>
-          <img src="/card1.jpg" className={s.cardImg} />
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
+        
+        {noticias.map((n) => (
+          <div key={n.id} className={s.card}>
+            <small>IES CURA VALERA</small>
+            <h3>{n.titulo}</h3>
+            <p>{n.texto}</p>
+            <img src={n.imagen} className={s.cardImg} />
+            <button onClick={() => abrirModal(n)} className="btn btn-link" style={{padding:0}}>
+                Ver detalle
+            </button>
+          </div>
+        ))}
 
-        <div className={s.card}>
-          <small>IES CURA VALERA</small>
-          <h3>Taller contra el acoso</h3>
-          <p>Actividad de prevención sobre bullying y ciberacoso.</p>
-          <img src="/card2.png" className={s.cardImg} />
-        </div>
-
-        <div className={s.card}>
-          <small>IES CURA VALERA</small>
-          <h3>Feliz Navidad</h3>
-          <p>Felicitación navideña de la comunidad educativa.</p>
-          <img src="/card3.webp" className={s.cardImg} />
-        </div>
-
-        <div className={s.card}>
-          <small>IES CURA VALERA</small>
-          <h3>Charlas educativas</h3>
-          <p>Jornadas formativas para el alumnado del centro.</p>
-          <img src="/card4.webp" className={s.cardImg} />
+        <div className={s.card} style={{border:'2px dashed red'}}>
+            <h3>Prueba Error</h3>
+            <button onClick={() => abrirModal(null)} className="btn btn-danger">Simular 404</button>
         </div>
       </div>
 
       <aside>
-        <h3 style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
-          BIBLIOTECA WEB
-        </h3>
-
-        <img src="/biblioweb.png" alt="Biblioweb" className={s.sidebarImg} />
-
-        <div style={{ marginTop: '20px' }}>
-          <iframe
-            width="100%"
-            height="200"
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            style={{ border: 0, borderRadius: '4px' }}
-          />
-        </div>
+        <h3>BIBLIOTECA WEB</h3>
+        <iframe width="100%" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ" style={{ border: 0 }} />
       </aside>
 
+      <NoticiaModal show={show} handleClose={() => setShow(false)} noticia={seleccionada} />
     </main>
   );
 }

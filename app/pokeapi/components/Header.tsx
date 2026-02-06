@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 import Link from 'next/link';
 import { Nav, Navbar, Container, NavDropdown, Button } from 'react-bootstrap';
+import { useLanguage } from '../context/LanguageContext';
 
-import { useLanguage } from '../context/LanguageContext'; 
 export default function Header() {
   const { setLang, t } = useLanguage();
 
@@ -15,15 +15,24 @@ export default function Header() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto ms-3">
             <Link href="/pokeapi" passHref legacyBehavior><Nav.Link>{t?.home || "Inicio"}</Nav.Link></Link>
+
             
-            <NavDropdown title={t?.gen_drop || "Generaciones"} id="basic-nav-dropdown">
-              <Link href="/pokeapi/generacion/1" passHref legacyBehavior><NavDropdown.Item>Gen 1</NavDropdown.Item></Link>
-              <Link href="/pokeapi/generacion/2" passHref legacyBehavior><NavDropdown.Item>Gen 2</NavDropdown.Item></Link>
-              <Link href="/pokeapi/generacion/3" passHref legacyBehavior><NavDropdown.Item>Gen 3</NavDropdown.Item></Link>
+            <NavDropdown title={t?.others || "Otras"} id="basic-nav-dropdown">
+                      
+              <Link href="/pokeapi/error-simulado" passHref legacyBehavior>
+                <NavDropdown.Item>{t?.season3 || "Tercera temporada"}</NavDropdown.Item>
+              </Link>
+
+              <Link href="/pokeapi/generacion/4" passHref legacyBehavior>
+                <NavDropdown.Item>{t?.season4 || "Cuarta temporada"}</NavDropdown.Item>
+              </Link>
+            
             </NavDropdown>
+  
 
             <Link href="/pokeapi/contacto" passHref legacyBehavior><Nav.Link>{t?.contact || "Contacto"}</Nav.Link></Link>
           </Nav>
+          
           <div className="d-flex gap-2">
             <Button variant="outline-light" onClick={() => setLang('sp')}>SP</Button>
             <Button variant="outline-light" onClick={() => setLang('en')}>EN</Button>

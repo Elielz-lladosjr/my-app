@@ -1,75 +1,107 @@
-'use client';
-import { Modal, Button, ProgressBar } from 'react-bootstrap';
-import { useLanguage } from '../context/LanguageContext';
+"use client";
+
+import { Modal, Button, ProgressBar } from "react-bootstrap";
+import { useLanguage } from "../context/LanguageContext";
+import { useEffect, useState } from "react";
 
 export default function PokemonModal({ show, handleClose, pokemon }: any) {
   const { t } = useLanguage();
+  const [current, setCurrent] = useState<any>(pokemon);
+  const [loading, setLoading] = useState(false);
 
-  if (!pokemon) return null;
 
-  const getStat = (name: string) => {
-    const s = pokemon.stats.find((item: any) => item.stat.name === name);
-    return s ? s.base_stat : 0;
+  useEffect(() => {
+    setCurrent(pokemon);
+  }, [pokemon]);
+
+  if (!current) return null;
+
+  const id = current.id;
+
+  const fetchPokemon = async (newId: number) => {
+    if (newId < 1 || newId > 1000) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${newId}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      setCurrent(data);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const getStat = (name: string) =>
+    current.stats.find((s: any) => s.stat.name === name)?.base_stat || 0;
 
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton className="bg-danger text-white">
         <Modal.Title className="text-capitalize fw-bold">
-          {pokemon.name} <small>#{pokemon.id}</small>
+          {current.name} <small>#{id}</small>
         </Modal.Title>
       </Modal.Header>
-      
+
       <Modal.Body>
+
+        <div className="mb-3">
+          <small>ID Pokémon ({id} / 1000)</small>
+          <ProgressBar now={id} max={1000} />
+        </div>
+
         <div className="text-center mb-4">
-          <img 
-            src={pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default} 
-            alt={pokemon.name} 
+          <img
+            src={
+              current.sprites.other["official-artwork"].front_default ||
+              current.sprites.front_default
+            }
+            alt={current.name}
             width={180}
           />
         </div>
 
-        <div className="px-3">
-            <div className="d-flex justify-content-between mb-2">
-                <strong>{t.height || "Altura"}:</strong> <span>{pokemon.height / 10} m</span>
-            </div>
-            <div className="d-flex justify-content-between mb-3">
-                <strong>{t.weight || "Peso"}:</strong> <span>{pokemon.weight / 10} kg</span>
-            </div>
-            
-            <hr />
-            
-            <h5 className="mb-3 fw-bold">{t.stats || "Estadísticas"}</h5>
+        <div>
+          <p><strong>{t?.height || "Altura"}:</strong> {current.height / 10} m</p>
+          <p><strong>{t?.weight || "Peso"}:</strong> {current.weight / 10} kg</p>
 
-            <div className="mb-2">
-                <div className="d-flex justify-content-between small">
-                    <span>{t.hp || "Vida (HP)"}</span>
-                    <span className="fw-bold">{getStat('hp')}</span>
-                </div>
-                <ProgressBar variant="success" now={getStat('hp')} max={150} />
-            </div>
+          <hr />
+          <strong>{t?.stats || "Estadísticas"}</strong>
 
-            <div className="mb-2">
-                <div className="d-flex justify-content-between small">
-                    <span>{t.attack || "Ataque"}</span>
-                    <span className="fw-bold">{getStat('attack')}</span>
-                </div>
-                <ProgressBar variant="danger" now={getStat('attack')} max={150} />
-            </div>
-
-            <div className="mb-2">
-                <div className="d-flex justify-content-between small">
-                    <span>{t.defense || "Defensa"}</span>
-                    <span className="fw-bold">{getStat('defense')}</span>
-                </div>
-                <ProgressBar variant="info" now={getStat('defense')} max={150} />
-            </div>
+          <div className="mb-2">
+            {t?.hp || "HP"}
+            <ProgressBar now={getStat("hp")} max={150} />
+          </div>
+          <div className="mb-2">
+            {t?.attack || "Ataque"}
+            <ProgressBar now={getStat("attack")} max={150} />
+          </div>
+          <div className="mb-2">
+            {t?.defense || "Defensa"}
+            <ProgressBar now={getStat("defense")} max={150} />
+          </div>
         </div>
       </Modal.Body>
-      
-      <Modal.Footer>
+
+      <Modal.Footer className="d-flex justify-content-between">
+        <Button
+          variant="outline-primary"
+          disabled={id === 1 || loading}
+          onClick={() => fetchPokemon(id - 1)}
+        >
+          {t?.prev || "Anterior"}
+        </Button>
+
         <Button variant="secondary" onClick={handleClose}>
-          Cerrar
+          {t?.close_btn || "Cerrar"}
+        </Button>
+
+        <Button
+          variant="outline-primary"
+          disabled={id === 1000 || loading}
+          onClick={() => fetchPokemon(id + 1)}
+        >
+          {t?.next || "Siguiente"}
         </Button>
       </Modal.Footer>
     </Modal>
